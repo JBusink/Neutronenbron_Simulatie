@@ -89,11 +89,10 @@ function multiple_collision(E0, n)
     return Elist, collision_number, Thermalization_number
 end
 
-function multiple_collision_random(P_initial, E_initial, n, thermal,ET)
+function multiple_collision_random(P_initial, E_initial, n, thermal)
     Energylist, Px, Py, Pz = Vector{Float64}(), Vector{Float64}(), Vector{Float64}(), Vector{Float64}()
-    Thermalization_number = Vector{Float64}()
     collision_number = Vector{Float64}()
-
+    # println(FPT)
     append!(collision_number, 0)
     append!(Energylist, E_initial)
     append!(Px, P_initial[1])
@@ -101,10 +100,15 @@ function multiple_collision_random(P_initial, E_initial, n, thermal,ET)
     append!(Pz, P_initial[3])
 
     i = 0
-    # ET = 4e-2
+    ET = 4e-2
     T = 293
     pmagnitude = norm(P_initial)
     E = pmagnitude .^ 2 ./ 2.0
+
+    Thermal_list1 = Vector{Float64}()
+    Thermal_list2 = Vector{Float64}()
+    Thermal_list3 = Vector{Float64}()
+    Thermal_list4 = Vector{Float64}()
 
     while i < n
         P_initial, E = single_collision_random(P_initial, E)
@@ -112,7 +116,6 @@ function multiple_collision_random(P_initial, E_initial, n, thermal,ET)
         if thermal == 1
             if E < ET
                 E = Maxwell_Boltzmann(T)[1]
-                push!(Thermalization_number, i)
             end
         end
 
@@ -123,7 +126,9 @@ function multiple_collision_random(P_initial, E_initial, n, thermal,ET)
         append!(collision_number, i)
         i = i .+ 1
     end
-    return Energylist, Px, Py, Pz, collision_number, Thermalization_number
+
+
+    return Energylist, Px, Py, Pz
 end
 
 # function save_single_trajectory()

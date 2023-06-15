@@ -1,6 +1,6 @@
 module NF
 
-using CSV, DataFrames, Interpolations
+using CSV, DataFrames, Interpolations, Distributions
 
 Nav = 6.023 * 1e23
 MH20 = 18.01524

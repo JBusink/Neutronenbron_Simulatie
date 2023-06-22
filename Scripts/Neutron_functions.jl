@@ -58,6 +58,9 @@ end
 
 
 function random_distance_trav(Energy)
+    if Energy == 0
+        return 1e-10
+    end
     λ0 = MFP(n_protons, cross_section_H1_SI(Energy))
     d = Exponential(λ0)
     l = rand(d)

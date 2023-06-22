@@ -1,19 +1,17 @@
 module SM
 
-using Distributions, LinearAlgebra
-
+using Distributions, LinearAlgebra, Interpolations
 dir = "/Users/jbusink/Documents/GitHub/Neutronenbron_Simulatie/"
-
 include(dir * "Scripts/Neutron_functions.jl")
 
 function unit_vector(theta, phi)
     """
     Return a unit vector with polar angles theta and phi.
     """
-    a = cos(theta)
-    b = sin(theta)
-    c = cos(phi)
-    d = sin(phi)
+    a = cos.(theta)
+    b = sin.(theta)
+    c = cos.(phi)
+    d = sin.(phi)
     return Array([b * c, b * d, a])
 end
 
@@ -24,9 +22,9 @@ function collision_lab_x(Energy)
     ϕ = rand() * 2 * pi
     p_lab = pmagnitude * Array([1, 0, 0]) #collision in arbitrary x dimension.
     p_cm = p_lab / 2.0
-    p_cm_new = norm(p_cm) * unit_vector(θ, ϕ)
+    p_cm_new = norm.(p_cm) * unit_vector.(θ, ϕ)
     p_lab_new = p_cm_new .+ p_cm
-    Energy_new = norm(p_lab_new)^2 ./ 2.0
+    Energy_new = norm.(p_lab_new)^2 ./ 2.0
     return (Energy_new, θ, ϕ)
 end
 
@@ -37,7 +35,7 @@ function collision_lab_z(Energy)
     ϕ = rand() * 2 * pi
     p_lab = pmagnitude * Array([0, 0, 1]) #collision in arbitrary x dimension.
     p_cm = p_lab / 2.0
-    p_cm_new = norm(p_cm) * unit_vector(θ, ϕ)
+    p_cm_new = norm(p_cm) * unit_vector.(θ, ϕ)
     p_lab_new = p_cm_new .+ p_cm
     Energy_new = norm(p_lab_new)^2 ./ 2.0
     return (Energy_new, θ, ϕ)
@@ -50,9 +48,8 @@ function Maxwell_Boltzmann(T)
     to a Gamma distributions with k-shape factor 3/2 and scaling of KbT"""
     Kb = 8.617343 * 1e-5 # ev/K
     T = 293
-    d = Distributions.Gamma(3 / 2, Kb .* T)
+    d = Distributions.Gamma.(3 / 2, Kb .* T)
     E0 = rand(d, 1)[1]
-    # println(E0)
     if E0 < 1e-5
         E0 = 1e-5
         return E0
@@ -85,49 +82,50 @@ function multiple_collision(E0, n)
     return Elist, collision_number, Thermalization_number
 end
 
+
+Elist = NF.logrange(-5,7,1001)
+survival_E =  NF.cross_section_interpolated(dir*"Data/H1_elastic_scattering_sigma.rtf", Elist) ./
+( NF.cross_section_interpolated(dir*"Data/H1_elastic_scattering_sigma.rtf", Elist) .+ NF.cross_section_interpolated(dir*"Data/H1_fission_sigma.rtf", Elist))
+survival_rate = linear_interpolation(Elist,survival_E)
+
 function check_survivalHnγ(E)
-    if E == 1e-7
+    if E == 0
         return E
     end
-
-    σHnn, σHnγ = NF.cross_section_interpolated(dir * "Data/H1_elastic_scattering_sigma.rtf", E), NF.cross_section_interpolated(dir * "Data/H1_fission_sigma.rtf", E)
-    σtotal = σHnn + σHnγ
-    rng = rand() * σtotal
-    if rng > σHnn
-        E = 1e-7
+    if rand() > survival_rate(E)
+        E = 0
         return E
     end
     return E
 end
 
+
 function single_collision_random(P_initial, E_initial)
-    if E_initial == 1e-7
-        # println("check 1")
-
-        p_lab_new = 0 .* unit_vector(0, 0)
-        Energy_new = 1e-7
-        return (p_lab_new, Energy_new)
+    if E_initial == 0
+        # p_lab_new = 0 .* unit_vector(0, 0)
+        # Energy_new = 0
+        return (0 .* unit_vector(0, 0), 0)
     end
-    pmagnitude = norm(P_initial)
-    E = pmagnitude .^ 2 ./ 2.0
+    # pmagnitude = norm(P_initial) ### FOUT
+    # E = pmagnitude .^ 2 ./ 2.0
 
-    θ = (rand()) * pi
-    ϕ = rand() * 2 * pi
-    p_lab = P_initial
-    p_cm = p_lab / 2.0
+    # θ = (rand()) * pi
+    # ϕ = rand() * 2 * pi
+    # p_lab = P_initial
+    # p_cm = p_lab / 2.0
 
-    p_cm_new = norm(p_cm) * unit_vector(θ, ϕ)
-    p_lab_new = p_cm_new .+ p_cm
-    Energy_new = norm(p_lab_new)^2 ./ 2.0
-    return (p_lab_new, Energy_new)
+    # p_cm_new = norm(p_cm) * unit_vector(θ, ϕ)
+    # p_lab_new = p_cm_new .+ p_cm
+    # Energy_new = norm(p_lab_new)^2 ./ 2.0
+    return (norm(P_initial / 2.0) * unit_vector((rand()) * pi, rand() * 2 * pi) .+ P_initial / 2.0, norm(norm(P_initial / 2.0) * unit_vector((rand()) * pi, rand() * 2 * pi) .+ P_initial / 2.0)^2 ./ 2.0)
 end
 
 function multiple_collision_random(P_initial, E_initial, n, thermal)
     Energylist, Px, Py, Pz = Vector{Float64}(), Vector{Float64}(), Vector{Float64}(), Vector{Float64}()
     append!(Energylist, E_initial)
-    # append!(Px, P_initial[1])
-    # append!(Py, P_initial[2])
-    # append!(Pz, P_initial[3])
+    append!(Px, P_initial[1])
+    append!(Py, P_initial[2])
+    append!(Pz, P_initial[3])
 
     i = 0
     ET = 4e-2
@@ -137,20 +135,18 @@ function multiple_collision_random(P_initial, E_initial, n, thermal)
 
     while i < n
         E = check_survivalHnγ(E)
-        # println(i, " 1  ", E)
 
         P_initial, E = single_collision_random(P_initial, E)
-        # println(i, " 2  ", E)
         if thermal == 1
-            if E < ET && E != 1e-7
+            if E < ET && E != 0
                 E = Maxwell_Boltzmann(T)[1]
             end
         end
 
         append!(Energylist, E)
-        # append!(Px, P_initial[1])
-        # append!(Py, P_initial[2])
-        # append!(Pz, P_initial[3])
+        append!(Px, P_initial[1])
+        append!(Py, P_initial[2])
+        append!(Pz, P_initial[3])
         i = i .+ 1
     end
 

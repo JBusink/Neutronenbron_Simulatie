@@ -1,6 +1,6 @@
 module SM
 
-using Distributions, LinearAlgebra, Interpolations
+using Distributions, LinearAlgebra, Interpolations, Dates
 dir = "/Users/jbusink/Documents/GitHub/Neutronenbron_Simulatie/"
 include(dir * "Scripts/Neutron_functions.jl")
 
@@ -109,6 +109,33 @@ function multiple_collision_random(P_initial, E_initial, n, thermal)
     return Energylist, Px, Py, Pz
 end
 
+
+function Simulate_multiple_collisions(n_particles,n_collisions)
+    Etotal = []
+    Pxtotal,Pytotal,Pztotal = [],[],[]
+    Xtotal,Ytotal,Ztotal = [],[],[]
+    for i in 1:1:n_particles
+        if i % 10000 == 0
+            println(i)
+            println("Free momory: ", Sys.free_memory() / 2^30)
+            println("Local Time: ",Dates.format(now(), "HH:MM:SS"))
+        end
+        E0,θ,ϕ =(rand()*4 .+ 3).*1e6,rand()*π,rand()*2*π
+        P_initial = sqrt.(2 .* E0) .* SM.unit_vector(θ,ϕ)
+        E,Px,Py,Pz = SM.multiple_collision_random(P_initial,E0,n_collisions,1)
+        
+        distance =  NF.random_distance_trav.(E) .* 100
+        normlist = [norm(permutedims(Array([Px Py Pz]))[1:3,i]) for i in 1:1:length(Pz)] .+ 1e-20
+        Δx =  Px .* NF.random_distance_trav.(E) .* 100 ./ normlist
+        Δy =  Py .* NF.random_distance_trav.(E) .* 100 ./ normlist
+        Δz =  Pz .* NF.random_distance_trav.(E) .* 100 ./ normlist
+        x,y,z = cumsum(Δx), cumsum(Δy), cumsum(Δz)
+
+        push!(Etotal,E);push!(Pxtotal,Px);push!(Pytotal,Py);push!(Pztotal,Pz);
+        push!(Xtotal,x);push!(Ytotal,y);push!(Ztotal,z)
+    end
+    return (Xtotal,Ytotal,Ztotal,Etotal,Pxtotal,Pytotal,Pztotal)
+end
 # function save_single_trajectory()
 end
 

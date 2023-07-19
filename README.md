@@ -3,7 +3,9 @@
 ## Introduction
 In this document we describe a method for calculating the energy density and flux of neutrons in the water tank present at the 'natuurkundepracticum' at the Univeristeit van Amsterdam. A primary source of neutrons is located near the center of a water tank. This source contains a quantity of Am-241 (activity approximately 10 GBq) mixed with Be-9. The $\alpha$-particles emitted from the Am can be captured by the Be under formation of C-12 and a single neutron. The neutron flux from the source is $10^6$ per second. The neutrons are emitted with an energy in the range 3 to 10 MeV. The energy is subsequently moderated in collisions with the protons in the water molecules. Because the mass of the neutron is nearly identical to that of the proton, the energy is transferred very efficiently in collisions: a neutron colliding with a stationary proton loses, on average, half its kinetic energy in the collision. Neutrons at a larger distance from the center of the tank (the location of the neutron source) have a undergone more collisions. Consequently, we expect the energy distribution to be centered around lower energy as we move further away from the the source, towards the outside rim of the container. There are two reasons why knowledge of the energy distribution as a function of distance to the source is useful. The first is related to safety, we want the water tank to be large enough to ensure that the energy of the neutrons has been moderated down to thermal energies when they have diffused to the outer edge of the tank and subsequently escape to the environment. The second reason relates to the use of the setup in experiments. Targets can be placed in the tank at various distances from the source for activation experiments. The efficiency of this activation depends on the flux of impinging neutrons but also on (the distribution of) their energy. As both these quantities depend on position in the water tank it is important to calculate them. In the remainder of this document we describe the details of this calculation. The actual calculation takes the from of a Monte Carlo type simulation implemented as Julia code.
 
-## Description of elastic $n-p$ collisions.
+
+<details>
+<summary> Description of elastic n-p collisions. </summary>
 
 We shall make use of the fact that the masses of the neutron and proton are almost the same. Furthermore we realize that the protons are bound in the water molecules with energies of the order of just a few eV. This is very small compared to the MeV energies of the neutrons (at least initially). Hence we can approximate the protons as stationary targets. In addition we will use the fact that for all relevant energies the particles move at sub-relativistic speeds. Hence we may use the classical equation for the energy $E$ of each of the colliding particles:
 
@@ -28,8 +30,11 @@ To relate the momentum and energy of a neutron after a collision to the values b
 First we transform to the center of mass (cm) frame of the neutron and the target proton. In this frame the magnitude of the momentum of each of the colliding particles is $p/2$, half of the value of the impinging neutron. These momenta are oriented in opposite directions. This is illustrated in Fig. 1. An elastic collision corresponds to a random reorientation of the relative momentum of the two colliding particles in the cm-frame. To return to the laboratory frame we add $p/2$ to the component of the rotated momentum vector in the original direction of motion.  We are not interested in keeping track of the proton momentum after the collision. Hence, we discard it. The magnitude of the momentum of the neutron after the collision can take on any value between zero and its value before the collision. Hence, on average, the neutron loses half its energy. This implies that for a starting energy of several MeV, it takes roughly 20 collisions to reduce the neutron energy to thermal levels.
 
 The above procedure is only valid as long as the energy the neutron is significantly larger than the binding energy of the proton in a water molecule. In this case the assumption that the proton is an isolated stationary target is justified. Ultimately the neutron will have lost enough energy to thermalize and from then on its energy can be obtained by randomly drawing from a thermal (Boltzmann) distribution. 
+</details>
 
-## Steps in the simulation.
+
+<details>
+<summary> Steps in the Simulation</summary>
 
 We now describe in a bit more detail the steps of the simulation. We want to calculate a simulated trajectory of neutrons which start at the point $(0,0,0)$ in our water tank with an energy of 5 MeV. We take the initial momentum to be ${\mathbf{p}}_0$ the vector $(p_x, p_y, p_z)$ with magnitude $p_0$ given by Eq. 2 and random direction. We then transform this momentum vector to the center of mass (cm) frame giving:
 
@@ -122,5 +127,8 @@ The quantity $\phi_+$ can be canverted into a flux density (flux per unit area) 
 <figcaption align = "center"><b>Fig.2 - Left panel: cross section for elastic neutron-proton scattering in barn (blue), plotted versus neutron energy assuming the protons to be stationary targets (see Eq. 8). The yellow curve is the inelastic cross 
 section for the reaction of Eq. 9 given by Eq. 10. The right panel shows the corresponding mean free paths in mm.</b></figcaption>
 </figure>
+</details>
 
-
+<details>
+<summary>Results</summary>
+</details>

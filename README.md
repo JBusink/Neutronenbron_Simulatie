@@ -30,6 +30,13 @@ $$\mathbf{p}_{0 \, cm}= \frac{1}{2}(p_x, p_y, p_z). \label{momentum_cm}$$
 
 A collision with a proton which is stationary in the lab-frame is described in the cm-frame as a rotation of the relative momentum vector of the neutron and the proton to a random direction. Consequently, the momentum the neutron after the collision in the cm-frame is given by:
 
+
+<figure>
+<img src= "https://raw.githubusercontent.com/JBusink/Neutronenbron_Simulatie/main/Figures/Figures_markdown/Fig_cross_sections-1-1.png" alt="Trulli" style="width:70%">
+<figcaption align = "center"><b>Fig.1 - Schematic representation of an elastic collision of a neutron an a staionary proton. The top left panel represent a neutron moving to the right with a momentum of magnitude $p$ represented by the arrow. The panel in the top right is the same situation but viewed in the cm-frame. The bottom left panel represents the situation directly after the collision, again in the cm-frame. The magnitude of the momenta of the neutron and the proton in the cm-frame are unchanged in the collision; only the direction is changed. Finally we transform back to the lab-frame by adding $p/2$ to the horizontal components of the momentum of the neutron (blue) and the proton (red). We ignore the proton momentum. The new momentum of the neutron is used as initial momentum for the next collision.</b></figcaption>
+</figure>
+
+
 \begin{figure}[t!]
 \center{\includegraphics[width=12cm]{neutroncollision.png}} 
 \caption{Schematic representation of an elastic collision of a neutron an a staionary proton. The top left panel represent a neutron moving to the right with a momentum of magnitude $p$ represented by the arrow. The panel in the top right is the same situation but viewed in the cm-frame. The bottom left panel represents the situation directly after the collision, again in the cm-frame. The magnitude of the momenta of the neutron and the proton in the cm-frame are unchanged in the collision; only the direction is changed. Finally we transform back to the lab-frame by adding $p/2$ to the horizontal components of the momentum of the neutron (blue) and the proton (red). We ignore the proton momentum. The new momentum of the neutron is used as initial momentum for the next collision.} \label{fig:cm-collision}
@@ -80,9 +87,8 @@ The second quantity we calculate is the flux $\phi$ through a surface. The numer
 
 The quantity $\phi_+$ can be canverted into a flux density (flux per unit area) by dividing through $4 \pi r^2$. If we combine the known energy of the neutron each time it is located in the shell at $r$ with the obtained value for $\phi_+$ we obtain the flux as a function of energy. This is the quantity which we need to estimate activation efficiencies. 
 
-\begin{figure}[t!]
-\center{\includegraphics[width=12cm]{Fig_cross_sections.pdf}} 
-\caption{Left panel: cross section for elastic neutron-proton scattering in barn (blue), plotted versus neutron energy assuming the protons to be stationary targets (see Eq. (\ref{eq:sigma(E)})). The yellow curve is the inelastic cross 
-section for the reaction of Eq. (\ref{eq:inelast}) given by Eq. (\ref{eq:sigma-i}). The right panel shows the corresponding mean free paths in mm.}
- \label{fig:crosssection}
-\end{figure}
+<figure>
+<img src= "https://raw.githubusercontent.com/JBusink/Neutronenbron_Simulatie/main/Figures/Figures_markdown/Fig_cross_sections-1-1.png" alt="Trulli" style="width:70%">
+<figcaption align = "center"><b>Fig.2 - Left panel: cross section for elastic neutron-proton scattering in barn (blue), plotted versus neutron energy assuming the protons to be stationary targets (see Eq. (\ref{eq:sigma(E)})). The yellow curve is the inelastic cross 
+section for the reaction of Eq. (\ref{eq:inelast}) given by Eq. (\ref{eq:sigma-i}). The right panel shows the corresponding mean free paths in mm.</b></figcaption>
+</figure>

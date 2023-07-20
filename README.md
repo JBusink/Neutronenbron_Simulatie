@@ -48,7 +48,7 @@ A collision with a proton which is stationary in the lab-frame is described in t
 
 
 <figure>
-<img src= "https://raw.githubusercontent.com/JBusink/Neutronenbron_Simulatie/main/Figures/Figures_markdown/neutroncollision-1.png" alt="Trulli" style="width:100%">
+<img src= "https://github.com/JBusink/Neutronenbron_Simulatie/blob/main/Figures/Extra%20figures/neutroncollision-1.png?raw=true" alt="Trulli" style="width:100%">
 <figcaption align = "center"><b>Fig.1 - Schematic representation of an elastic collision of a neutron an a stationary proton. The top left panel represent a neutron moving to the right with a momentum of magnitude p represented by the arrow. The panel in the top right is the same situation but viewed in the cm-frame. The bottom left panel represents the situation directly after the collision, again in the cm-frame. The magnitude of the momenta of the neutron and the proton in the cm-frame are unchanged in the collision; only the direction is changed. Finally we transform back to the lab-frame by adding p/2 to the horizontal components of the momentum of the neutron (blue) and the proton (red). We ignore the proton momentum. The new momentum of the neutron is used as initial momentum for the next collision. </b></figcaption>
 </figure>
 

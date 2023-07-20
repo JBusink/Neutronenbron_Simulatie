@@ -1,4 +1,9 @@
 # Neutron Source Simulation
+<figure>
+<img src= "https://github.com/JBusink/Neutronenbron_Simulatie/blob/main/Figures/Figures_markdown/Neutron_source.png?raw=true" alt="Trulli" style="width:100%">
+<figcaption align = "left"><b>Fig.1 - Schematic representation of the neutron source water bath. How much radiation do we detect outside the water bath? </b></figcaption>
+</figure>
+
  The text is also available as .pdf: [neutronenbron.pdf](https://github.com/JBusink/Neutronenbron_Simulatie/files/12095379/neutronenbron.pdf).
 ## Introduction
 In this document we describe a method for calculating the energy density and flux of neutrons in the water tank present at the 'natuurkundepracticum' at the Univeristeit van Amsterdam. A primary source of neutrons is located near the center of a water tank. This source contains a quantity of Am-241 (activity approximately 10 GBq) mixed with Be-9. The $\alpha$-particles emitted from the Am can be captured by the Be under formation of C-12 and a single neutron. The neutron flux from the source is $10^6$ per second. The neutrons are emitted with an energy in the range 3 to 10 MeV. The energy is subsequently moderated in collisions with the protons in the water molecules. Because the mass of the neutron is nearly identical to that of the proton, the energy is transferred very efficiently in collisions: a neutron colliding with a stationary proton loses, on average, half its kinetic energy in the collision. Neutrons at a larger distance from the center of the tank (the location of the neutron source) have a undergone more collisions. Consequently, we expect the energy distribution to be centered around lower energy as we move further away from the the source, towards the outside rim of the container. There are two reasons why knowledge of the energy distribution as a function of distance to the source is useful. The first is related to safety, we want the water tank to be large enough to ensure that the energy of the neutrons has been moderated down to thermal energies when they have diffused to the outer edge of the tank and subsequently escape to the environment. The second reason relates to the use of the setup in experiments. Targets can be placed in the tank at various distances from the source for activation experiments. The efficiency of this activation depends on the flux of impinging neutrons but also on (the distribution of) their energy. As both these quantities depend on position in the water tank it is important to calculate them. In the remainder of this document we describe the details of this calculation. The actual calculation takes the from of a Monte Carlo type simulation implemented as Julia code.
@@ -105,4 +110,5 @@ section for the reaction of Eq. 9 given by Eq. 10. The right panel shows the cor
 <summary>Results
 </summary>
 </details>
+
 

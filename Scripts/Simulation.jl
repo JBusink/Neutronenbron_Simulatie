@@ -100,10 +100,10 @@ function flux_single_run_right(list1, cutoff)
     Returns:
         flux (int): the flux at a given barrier.
     """
-    list = [0;list1]
-    flux  = 0
+    list = [0; list1]
+    flux = 0
     for i in 1:1:(length(list)-1)
-        j = i+1
+        j = i + 1
         if list[j] .> cutoff && list[i] .< cutoff
             flux += 1
         end
@@ -123,10 +123,10 @@ function flux_single_run_left(list1, cutoff)
     Returns:
         flux (int): the flux at a given barrier.
     """
-    list = [0;list1]
-    flux  = 0
+    list = [0; list1]
+    flux = 0
     for i in 1:1:(length(list)-1)
-        j = i+1
+        j = i + 1
         if list[j] .< cutoff && list[i] .> cutoff
             flux += 1
         end
@@ -134,7 +134,7 @@ function flux_single_run_left(list1, cutoff)
     return flux
 end
 
-function flux_total(list,cutoff)
+function flux_total(list, cutoff)
     """Calculates the total flux (left + right)
 
     Args:
@@ -145,9 +145,9 @@ function flux_total(list,cutoff)
         flux (int): the total flux at a given barrier.
     """
     # """Returns the total flux  flux"""
-    flux_left = flux_single_run_left(list,cutoff)
-    flux_right = flux_single_run_right(list,cutoff)
-    return flux_left+flux_right
+    flux_left = flux_single_run_left(list, cutoff)
+    flux_right = flux_single_run_right(list, cutoff)
+    return flux_left + flux_right
 end
 
 function flux_netto(list, cutoff)
@@ -161,8 +161,8 @@ function flux_netto(list, cutoff)
         flux (int): the netto flux at a given barrier.
     """
     # """Returns the netto flux"""
-    flux_left = flux_single_run_left(list,cutoff)
-    flux_right = flux_single_run_right(list,cutoff)
+    flux_left = flux_single_run_left(list, cutoff)
+    flux_right = flux_single_run_right(list, cutoff)
     return flux_right - flux_left
 end
 
@@ -191,7 +191,7 @@ function single_collision_random(P_initial, E_initial)
         return (0 .* unit_vector(0, 0), 0)
     end
 
-    θ = (rand()) * pi
+    θ = acos(2 * rand() - 1)
     ϕ = rand() * 2 * pi
 
     p_lab = (P_initial ./ norm(P_initial)) * sqrt(2 * E_initial) #if energy is Boltzmann distributed, I correct for it in the momentum.
@@ -291,7 +291,7 @@ function Simulate_multiple_collisions(n_particles, n_collisions)
             println("Free momory: ", Sys.free_memory() / 2^30)
             println("Local Time: ", Dates.format(now(), "HH:MM:SS"))
         end
-        E0, θ, ϕ = (rand() * 4 .+ 3) .* 1e6, rand() * π, rand() * 2 * π
+        E0, θ, ϕ = (rand() * 4 .+ 3) .* 1e6, acos(2 * rand() - 1), rand() * 2 * π
         P_initial = sqrt.(2 .* E0) .* SM.unit_vector(θ, ϕ)
         E, Px, Py, Pz = SM.multiple_collision_random(P_initial, E0, n_collisions, 1)
 
@@ -313,4 +313,3 @@ function Simulate_multiple_collisions(n_particles, n_collisions)
 end
 
 end
-
